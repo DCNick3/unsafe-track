@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
         - name: unsafe-track
-          image: ghcr.io/dcnick3/unsafe-track
+          image: ghcr.io/dcnick3/unsafe-track:ref-08b2520624016c260c8231c6b7d41db3dcb993c3
