@@ -143,7 +143,10 @@ fn plot_results_impl<DB, X>(
     chart
         .configure_mesh()
         .x_desc(X::AXIS_DESCRIPTION)
-        .y_desc("Count")
+        .y_desc(match y_coord {
+            YCoord::Functions => "Function count",
+            YCoord::Expressions => "Expression count",
+        })
         .axis_desc_style(("sans-serif", 15))
         .draw()
         .unwrap();
