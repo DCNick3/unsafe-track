@@ -83,7 +83,7 @@ impl YCoord {
 
 pub fn plot_results_svg(results: &[CommitResult], x_coord: XCoord, y_coord: YCoord) -> String {
     let mut buf = String::new();
-    let root = SVGBackend::with_string(&mut buf, (1280, 600)).into_drawing_area();
+    let root = SVGBackend::with_string(&mut buf, (800, 400)).into_drawing_area();
     plot_results(results, x_coord, y_coord, &root);
     drop(root);
     buf
@@ -177,6 +177,7 @@ fn plot_results_impl<DB, X>(
 
     chart
         .configure_series_labels()
+        .position(SeriesLabelPosition::MiddleLeft)
         .background_style(&WHITE.mix(0.8))
         .border_style(&BLACK)
         .draw()
