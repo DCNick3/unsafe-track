@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: unsafe-track
+spec:
+  rules:
+    - host: unsafe-track.dcnick3.me
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: unsafe-track
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - unsafe-track.dcnick3.me

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsafe-track
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unsafe-track
+  template:
+    metadata:
+      labels:
+        app: unsafe-track
+      annotations:
+        instrumentation.opentelemetry.io/inject-sdk: "true"
+    spec:
+      containers:
+        - name: unsafe-track
+          image: ghcr.io/dcnick3/unsafe-track

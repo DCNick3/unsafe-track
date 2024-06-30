@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: unsafe-track
+spec:
+  selector:
+    app: unsafe-track
+  ports:
+    - port: 80
+      targetPort: 8080

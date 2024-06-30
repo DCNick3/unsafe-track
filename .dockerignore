@@ -1,0 +1,6 @@
+target
+.idea
+.gitignore
+.git
+Dockerfile
+deployment
