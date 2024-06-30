@@ -9,7 +9,7 @@ use axum::{
 };
 use axum_extra::TypedHeader;
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
-use headers::ContentType;
+use headers::{CacheControl, ContentType};
 use regex::Regex;
 use serde::Deserialize;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
@@ -63,7 +63,7 @@ async fn github(
     }): State<AppState>,
     Path((owner, repo)): Path<(String, String)>,
     Query(params): Query<GithubParams>,
-) -> (TypedHeader<ContentType>, String) {
+) -> (TypedHeader<ContentType>, TypedHeader<CacheControl>, String) {
     let url = format!("https://github.com/{}/{}", owner, repo);
     let path_filter = Regex::new(&params.path_filter.unwrap_or(r"\.rs$".to_string())).unwrap();
 
@@ -82,5 +82,9 @@ async fn github(
     .await
     .unwrap();
 
-    (TypedHeader(mime::IMAGE_SVG.into()), rendered)
+    (
+        TypedHeader(mime::IMAGE_SVG.into()),
+        TypedHeader(CacheControl::new().with_no_cache()),
+        rendered,
+    )
 }
