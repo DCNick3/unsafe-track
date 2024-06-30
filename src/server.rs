@@ -8,12 +8,13 @@ use axum::{
     Router,
 };
 use axum_extra::TypedHeader;
+use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use headers::ContentType;
 use regex::Regex;
 use serde::Deserialize;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use tower_http::catch_panic::CatchPanicLayer;
-use tracing::{info, info_span, Level, Span};
+use tracing::{info, info_span, Span};
 
 const ANALYSIS_CACHE_SIZE: u64 = 50_000;
 
@@ -25,7 +26,10 @@ struct AppState {
 pub async fn start(port: u16) {
     let middleware = tower::ServiceBuilder::new()
         .layer(CatchPanicLayer::new())
-        .layer(tower_otel::trace::HttpLayer::server(Level::INFO));
+        // include trace context as header into the response
+        .layer(OtelInResponseLayer)
+        // start OpenTelemetry trace on incoming request
+        .layer(OtelAxumLayer::default());
 
     // create the axum server
     let app = Router::new()
